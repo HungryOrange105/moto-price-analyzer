@@ -1,0 +1,7 @@
+.venv/
+catboost_info/
+*.session.sql
+__pycache__/
+.DS_Store
+*.pkl
+*.cbm
