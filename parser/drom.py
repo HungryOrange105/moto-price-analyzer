@@ -53,7 +53,6 @@ for i in range(1,101):
             price = motocycle.find('div', class_='_1wx3rbx4').text
             place = motocycle.find('span', class_='css-1488ad e162wx9x0').text
         except AttributeError as e:
-            print(f'мот на странице {i} не в продаже')
             continue
 
         mot ={

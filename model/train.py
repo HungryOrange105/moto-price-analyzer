@@ -19,21 +19,6 @@ model.fit(x_train, y_train, cat_features=features)
 
 model.save_model('model/catboost_model.cbm')
 
-print(f'mae: {mean_absolute_error(y_test, model.predict(x_test))}')
-print(f'mse: {mean_squared_error(y_test, model.predict(x_test))}')
-print(f'r2: {r2_score(y_test, model.predict(x_test))}')
-
-
-
-# 'name', 'year', 'moto_type', 'place', 'volume', 'distance', 'fuel'
-# my_moto = pd.Series({
-#     'name': 'Suzuki SV 650',
-#     'year': 1998,
-#     'moto_type': 'Классический мотоцикл',
-#     'volume': 650,
-#     'distance': 40,
-#     'fuel': 'бензин'
-# })
-# y_pred = model.predict(my_moto)
-
-# print(y_pred)
+# print(f'mae: {mean_absolute_error(y_test, model.predict(x_test))}')
+# print(f'mse: {mean_squared_error(y_test, model.predict(x_test))}')
+# print(f'r2: {r2_score(y_test, model.predict(x_test))}')
