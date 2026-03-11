@@ -18,14 +18,7 @@ my_moto = pd.DataFrame({
     'distance': [30_000],
     'fuel': ['бензин']
 })
-drugoy_moto = pd.DataFrame({
-    'name': ['Yamaha MT-07'],
-    'year': [2017],
-    'moto_type': ['Классический мотоцикл'],
-    'volume': [700],
-    'distance': [31443],
-    'fuel': ['бензин']
-})
+
 cat_cols = ['name', 'moto_type', 'fuel']
 
 print('catboost')
