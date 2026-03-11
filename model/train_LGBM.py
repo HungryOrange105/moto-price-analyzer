@@ -1,26 +1,28 @@
 import pandas as pd
-from catboost import CatBoostRegressor
+from lightgbm import LGBMRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-import os
 from sqlalchemy import create_engine
+import joblib
 
 engine = create_engine('postgresql://hungryorange@localhost:5432/motos_db')
-
 df = pd.read_sql('SELECT * FROM motos', engine)
-import matplotlib.pyplot as plt
-plt.scatter(df['volume'], df['price'], alpha=0.3)
-plt.show()
+
 x = df[['name', 'year', 'moto_type', 'volume', 'distance', 'fuel']]
 y = df['price']
 x_train, x_test,y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=52) 
 
-features = ['name', 'moto_type', 'fuel']
-model =CatBoostRegressor(iterations=350, learning_rate=0.1)
-model.fit(x_train, y_train, cat_features=features)
+for col in ['name', 'moto_type', 'fuel']:
+    x_train[col] = x_train[col].astype('category')
+    x_test[col] = x_test[col].astype('category')
 
-model.save_model('model/catboost_model.cbm')
 
-# print(f'mae: {mean_absolute_error(y_test, model.predict(x_test))}')
-# print(f'mse: {mean_squared_error(y_test, model.predict(x_test))}')
+model= LGBMRegressor(n_estimators=400,learning_rate=0.01,num_leaves=20, min_child_samples=1)
+
+model.fit(x_train,y_train)
+
+joblib.dump(model, 'model/lgbm.pkl')
+
 # print(f'r2: {r2_score(y_test, model.predict(x_test))}')
+# print(f'mse: {mean_squared_error(y_test, model.predict(x_test))}')
+# print(f'mae: {mean_absolute_error(y_test, model.predict(x_test))}')

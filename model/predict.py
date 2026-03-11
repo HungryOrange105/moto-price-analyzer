@@ -1,19 +1,40 @@
 from catboost import CatBoostRegressor
 import pandas as pd
+import  joblib
 
-model = CatBoostRegressor()
-model.load_model('model/catboost_model.cbm')
+model_catboost = CatBoostRegressor()
+model_catboost.load_model('model/catboost_model.cbm')
+
+model_rf = joblib.load('model/rf_model.pkl')
+
+model_lgbm = joblib.load('model/lgbm.pkl')
 
 # 'name', 'year', 'moto_type', 'volume', 'distance', 'fuel'
-my_moto = pd.Series({
-    'name': 'Suzuki SV 650',
-    'year': 1998,
-    'moto_type': 'Классический мотоцикл',
-    'volume': 650,
-    'distance': 40,
-    'fuel': 'бензин'
+my_moto = pd.DataFrame({
+    'name': ['Suzuki SV 650'],
+    'year': [1998],
+    'moto_type': ['Классический мотоцикл'],
+    'volume': [650],
+    'distance': [30_000],
+    'fuel': ['бензин']
 })
+drugoy_moto = pd.DataFrame({
+    'name': ['Yamaha MT-07'],
+    'year': [2017],
+    'moto_type': ['Классический мотоцикл'],
+    'volume': [700],
+    'distance': [31443],
+    'fuel': ['бензин']
+})
+cat_cols = ['name', 'moto_type', 'fuel']
 
-y_pred = model.predict(my_moto)
-
-print(y_pred)
+print('catboost')
+print(model_catboost.predict(my_moto)[0])
+print('')
+print('rf')
+print(model_rf.predict(my_moto)[0])
+print('')
+print('lgbm')
+for col in cat_cols:
+    my_moto[col] = my_moto[col].astype('category')
+print(model_lgbm.predict(my_moto)[0])
